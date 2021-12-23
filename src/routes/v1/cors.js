@@ -10,7 +10,14 @@ async function routes(fastify, options) {
     expiresIn: 10,
     privacy: "public",
   });
-  fastify.register(require("fastify-cors"), require("../../../cors.json"));
+  fastify.register(require("fastify-cors"), {
+    origin: [
+      /cubari\.moe/,
+      /proxy\.cubari\.moe/,
+      /jest\.testing\.local/,
+      /localhost/,
+    ],
+  });
 
   fastify.get("/:url", (request, reply) => {
     const decodedUrl = normalizeUrl(base64UrlDecode(request.params.url));

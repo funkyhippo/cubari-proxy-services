@@ -4,7 +4,6 @@ const {
   normalizeUrl,
 } = require("../../utils");
 const proxy = require("../../proxy");
-const corsOptions = require("../../../cors.json");
 
 async function routes(fastify, options) {
   fastify.register(require("fastify-caching"), {
@@ -12,7 +11,7 @@ async function routes(fastify, options) {
     privacy: "public",
   });
   fastify.register(require("fastify-cors"), {
-    methods: corsOptions.methods,
+    methods: ["GET"],
     origin: "*",
   });
 
