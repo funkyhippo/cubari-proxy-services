@@ -26,7 +26,7 @@ async function routes(fastify, options) {
       },
       rewriteHeaders(headers) {
         if (!(headers["content-type"] || "").startsWith("image")) {
-          failRqeuest = true;
+          failRequest = true;
         }
         const returnHeaders = {};
         Object.keys(headers)
