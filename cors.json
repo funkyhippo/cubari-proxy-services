@@ -1,0 +1,4 @@
+{
+  "methods": ["GET"],
+  "origin": ["cubari.moe", "proxy.cubari.moe", "jest.testing.local"]
+}
