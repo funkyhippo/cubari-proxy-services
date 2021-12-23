@@ -6,9 +6,13 @@ const {
 const proxy = require("../../proxy");
 
 async function routes(fastify, options) {
+  fastify.register(require("fastify-caching"), {
+    expiresIn: 10,
+    privacy: "public",
+  });
   fastify.register(require("fastify-cors"), require("../../../cors.json"));
 
-  fastify.get("/v1/cors/:url", (request, reply) => {
+  fastify.get("/:url", (request, reply) => {
     const decodedUrl = normalizeUrl(base64UrlDecode(request.params.url));
     const header = getRefererHeader(request.url, decodedUrl);
     proxy(request.raw, reply.raw, decodedUrl, {
@@ -39,4 +43,9 @@ async function routes(fastify, options) {
   });
 }
 
-module.exports = routes;
+module.exports = {
+  routes,
+  opts: {
+    prefix: "/v1/cors",
+  },
+};
