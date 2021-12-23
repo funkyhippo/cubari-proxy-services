@@ -13,6 +13,20 @@ The resolution strategy for images is as follows; the referrer is set as:
 1. Host query parameter (ie. ?host=<referrer>)
 2. Known mapping in the repo
 3. Target origin
+
+# Generating Base64 URL Encoded Strings
+
+
+## Python
+
+import base64
+base64.urlsafe_b64encode("https://example.com", "utf-8")
+
+
+## JavaScript (Web)
+
+btoa("https://example.com").replace(/\\+/g, "-").replace(/\\//g, "_")
+
 `;
 
 async function routes(fastify, options) {
