@@ -4,7 +4,7 @@ All URLs should be base64 URL encoded.
 
 # /v1/cors/:url
 
-Image content-types will fail.
+Image content-types will fail. Requires origin or x-requested-with headers.
 
 
 # /v1/image/:url

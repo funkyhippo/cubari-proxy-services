@@ -3,7 +3,12 @@ const {
   base64UrlDecode,
   normalizeUrl,
 } = require("../../utils");
-const proxy = require("../../proxy");
+const {
+  proxy,
+  rewriteRequestHeadersHandler,
+  rewriteHeadersHandler,
+  onResponseHandler,
+} = require("../../proxy");
 
 async function routes(fastify, options) {
   fastify.register(require("fastify-caching"), {
@@ -22,31 +27,23 @@ async function routes(fastify, options) {
   fastify.get("/:url", (request, reply) => {
     const decodedUrl = normalizeUrl(base64UrlDecode(request.params.url));
     const header = getRefererHeader(request.url, decodedUrl);
-    let failRequest = false;
 
-    proxy(request.raw, reply.raw, decodedUrl, {
-      rewriteRequestHeaders(req, headers) {
-        return { ...headers, referer: header };
-      },
-      rewriteHeaders(headers) {
-        if ((headers["content-type"] || "").startsWith("image")) {
-          failRequest = true;
-        }
-        const returnHeaders = {};
-        Object.keys(headers)
-          .filter((header) => header.toLowerCase().startsWith("content"))
-          .forEach((header) => {
-            returnHeaders[header] = headers[header];
-          });
-        return returnHeaders;
-      },
-      onResponse(req, res, stream) {
-        if (failRequest) {
-          reply.send({ error: "Requested content was an image." });
-        } else {
-          reply.send(stream);
-        }
-      },
+    if (
+      !("origin" in request.headers) &&
+      !("x-requested-with" in request.headers)
+    ) {
+      return reply
+        .code(400)
+        .send(new Error("Missing origin or x-requested-with header."));
+    }
+
+    return proxy(request.raw, reply.raw, decodedUrl, {
+      rewriteRequestHeaders: rewriteRequestHeadersHandler(header),
+      rewriteHeaders: rewriteHeadersHandler(
+        (headers) => !(headers["content-type"] || "").startsWith("image"),
+        ([key, _]) => key.toLowerCase().startsWith("content")
+      ),
+      onResponse: onResponseHandler("Requested content was an image.", reply),
     });
   });
 }
