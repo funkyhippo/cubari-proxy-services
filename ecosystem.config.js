@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "img-proxy",
+      name: "proxy-services",
       script: "index.js",
       cwd: "./",
       instances: 4,
