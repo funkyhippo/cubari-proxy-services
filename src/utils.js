@@ -15,13 +15,13 @@ const extractEncodedUrl = (prefix, path) => {
 };
 
 const base64UrlDecode = (string) => {
-  const base64String = string.replaceAll("-", "+").replaceAll("_", "/");
+  const base64String = string.replace(/-/g, "+").replace(/_/g, "/");
   return Buffer.from(base64String, "base64").toString();
 };
 
 const base64UrlEncode = (string) => {
   const base64String = Buffer.from(string).toString("base64");
-  return base64String.replaceAll("+", "-").replaceAll("/", "_");
+  return base64String.replace(/\+/g, "-").replace(/\//g, "_");
 };
 
 /**
