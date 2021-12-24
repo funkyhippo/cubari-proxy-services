@@ -34,6 +34,9 @@ async function routes(fastify, options) {
         "Requested content was not an image.",
         reply
       ),
+      request: {
+        timeout: fastify.initialConfig.connectionTimeout,
+      },
     });
   });
 }

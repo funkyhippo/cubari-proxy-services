@@ -1,4 +1,8 @@
-const fastify = require("fastify")({ logger: true, maxParamLength: 8192 });
+const fastify = require("fastify")({
+  logger: true,
+  maxParamLength: 8192,
+  connectionTimeout: 15000,
+});
 
 // Apply CORS globally since the nested services will require it
 fastify.register(require("./routes/home"));

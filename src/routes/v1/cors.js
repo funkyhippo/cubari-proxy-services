@@ -44,6 +44,9 @@ async function routes(fastify, options) {
         ([key, _]) => key.toLowerCase().startsWith("content")
       ),
       onResponse: onResponseHandler("Requested content was an image.", reply),
+      request: {
+        timeout: fastify.initialConfig.connectionTimeout,
+      },
     });
   });
 }
