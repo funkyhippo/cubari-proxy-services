@@ -33,7 +33,7 @@ const rewriteHeadersHandler = (successCheck, headerFilterPredicate) => {
   };
 };
 
-const onResponseHandler = (errorMsg, reply) => {
+const onResponseHandler = (errorMsg, reply, cacheHeaders) => {
   return (req, res, stream) => {
     if (INJECTED_STATUS_HEADER in res.getHeaders()) {
       reply.code(400).send(new Error(errorMsg));
@@ -42,6 +42,9 @@ const onResponseHandler = (errorMsg, reply) => {
         .code(res.statusCode)
         .send(new Error(`Requested content returned ${res.statusCode}`));
     } else {
+      if (cacheHeaders) {
+        reply.header("cache-control", cacheHeaders);
+      }
       reply.send(stream);
     }
   };

@@ -49,6 +49,10 @@ const getRefererHeader = (rawUrlPath, decodedUrl) => {
   return normalizeUrl(decodedUrl);
 };
 
+const getCacheHeaders = (privacy, maxAge, sMaxAge) => {
+  return `${privacy}, max-age=${maxAge}, s-maxage=${sMaxAge}`;
+};
+
 const ping = (url) => {
   if (url.startsWith("https:")) {
     https.get(url);
@@ -63,5 +67,6 @@ module.exports = {
   getRefererHeader,
   base64UrlDecode,
   base64UrlEncode,
+  getCacheHeaders,
   ping,
 };

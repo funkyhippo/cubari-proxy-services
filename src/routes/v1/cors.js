@@ -2,6 +2,7 @@ const {
   getRefererHeader,
   base64UrlDecode,
   normalizeUrl,
+  getCacheHeaders,
 } = require("../../utils");
 const {
   proxy,
@@ -11,10 +12,6 @@ const {
 } = require("../../proxy");
 
 async function routes(fastify, options) {
-  fastify.register(require("fastify-caching"), {
-    expiresIn: 10,
-    privacy: "public",
-  });
   fastify.register(require("fastify-cors"), {
     origin: [
       /cubari\.moe/,
@@ -43,7 +40,11 @@ async function routes(fastify, options) {
         (headers) => !(headers["content-type"] || "").startsWith("image"),
         ([key, _]) => key.toLowerCase().startsWith("content")
       ),
-      onResponse: onResponseHandler("Requested content was an image.", reply),
+      onResponse: onResponseHandler(
+        "Requested content was an image.",
+        reply,
+        getCacheHeaders("public", 10, 10)
+      ),
       request: {
         timeout: fastify.initialConfig.connectionTimeout,
       },

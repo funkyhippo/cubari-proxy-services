@@ -2,6 +2,7 @@ const {
   getRefererHeader,
   base64UrlDecode,
   normalizeUrl,
+  getCacheHeaders,
 } = require("../../utils");
 const {
   proxy,
@@ -11,10 +12,6 @@ const {
 } = require("../../proxy");
 
 async function routes(fastify, options) {
-  fastify.register(require("fastify-caching"), {
-    expiresIn: 60 * 60 * 24 * 7,
-    privacy: "public",
-  });
   fastify.register(require("fastify-cors"), {
     methods: ["GET"],
     origin: "*",
@@ -32,7 +29,8 @@ async function routes(fastify, options) {
       ),
       onResponse: onResponseHandler(
         "Requested content was not an image.",
-        reply
+        reply,
+        getCacheHeaders("public", 60 * 60 * 24 * 7, 60 * 60 * 24 * 7)
       ),
       request: {
         timeout: fastify.initialConfig.connectionTimeout,
