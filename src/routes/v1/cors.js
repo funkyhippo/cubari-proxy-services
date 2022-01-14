@@ -21,7 +21,7 @@ async function routes(fastify, options) {
     ],
   });
 
-  fastify.get("/:url", (request, reply) => {
+  const callback = (request, reply) => {
     const decodedUrl = normalizeUrl(base64UrlDecode(request.params.url));
     const header = getRefererHeader(request.url, decodedUrl);
 
@@ -49,7 +49,10 @@ async function routes(fastify, options) {
         timeout: fastify.initialConfig.connectionTimeout,
       },
     });
-  });
+  };
+
+  fastify.get("/:url", callback);
+  fastify.post("/:url", callback);
 }
 
 module.exports = {
