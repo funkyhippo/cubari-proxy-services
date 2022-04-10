@@ -47,7 +47,7 @@ async function routes(fastify, options) {
       onResponse: onResponseHandler(
         "Requested content was an image.",
         reply,
-        getCacheHeaders("public", 10, 10)
+        getCacheHeaders("public", 30, 30)
       ),
       request: {
         timeout: fastify.initialConfig.connectionTimeout,
