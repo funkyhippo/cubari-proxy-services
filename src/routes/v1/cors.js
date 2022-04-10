@@ -19,6 +19,7 @@ async function routes(fastify, options) {
       /jest\.testing\.local/,
       /localhost/,
       /hoppscotch\.io/,
+      /staging\.guya\.moe/,
       /manga\.guya\.moe/,
       /guya\.moe/,
     ],
