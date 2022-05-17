@@ -15,6 +15,8 @@ const createSession = async () => {
         headers: { "Content-Type": "application/json" },
       });
       if (response.status === 200) {
+        // Queue another session creation since it's a no-op
+        setTimeout(createSession, 600000);
         return;
       }
     } finally {
