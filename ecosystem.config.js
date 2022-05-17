@@ -4,7 +4,7 @@ module.exports = {
       name: "proxy-services",
       script: "index.js",
       cwd: "./",
-      instances: 4,
+      instances: 3,
       exec_mode: "cluster",
       env: {
         NODE_ENV: "development",
