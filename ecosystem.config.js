@@ -8,9 +8,13 @@ module.exports = {
       exec_mode: "cluster",
       env: {
         NODE_ENV: "development",
+        FLARESOLVERR_URL: "http://localhost:9192/v1",
+        FLARESOLVERR_SESSION: "sess",
       },
       env_production: {
         NODE_ENV: "production",
+        FLARESOLVERR_URL: "http://localhost:9192/v1",
+        FLARESOLVERR_SESSION: "sess",
       },
     },
     {
@@ -25,5 +29,19 @@ module.exports = {
         NODE_ENV: "production",
       },
     },
+    {
+      name: "FlareSolverr",
+      script: "dist/server.js",
+      cwd: "../flaresolverr",
+      instances: 1,
+      env: {
+        PORT: 9192,
+        NODE_ENV: "development",
+      },
+      env_production: {
+        PORT: 9192,
+        NODE_ENV: "production",
+      },
+    }
   ],
 };

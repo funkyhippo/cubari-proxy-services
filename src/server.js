@@ -8,10 +8,14 @@ const fastify = require("fastify")({
 fastify.register(require("./routes/home"));
 
 // V1 routes
-const { routes: corsRoute, opts: corsOpts } = require("./routes/v1/cors");
-fastify.register(corsRoute, corsOpts);
+const { routes: corsRouteV1, opts: corsOptsV1 } = require("./routes/v1/cors");
+fastify.register(corsRouteV1, corsOptsV1);
 
-const { routes: imageRoute, opts: imageOpts } = require("./routes/v1/image");
-fastify.register(imageRoute, imageOpts);
+const { routes: imageRouteV1, opts: imageOptsV1 } = require("./routes/v1/image");
+fastify.register(imageRouteV1, imageOptsV1);
+
+// V2 routes
+const { routes: corsRouteV2, opts: corsOptsV2 } = require("./routes/v2/cors");
+fastify.register(corsRouteV2, corsOptsV2);
 
 module.exports = fastify;

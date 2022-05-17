@@ -61,6 +61,12 @@ const ping = (url) => {
   }
 };
 
+const sleep = (duration) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, duration);
+  });
+};
+
 module.exports = {
   normalizeUrl,
   extractEncodedUrl,
@@ -69,4 +75,5 @@ module.exports = {
   base64UrlEncode,
   getCacheHeaders,
   ping,
+  sleep,
 };
